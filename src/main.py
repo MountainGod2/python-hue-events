@@ -1,6 +1,5 @@
 import asyncio
 import os
-from dataclasses import dataclass
 from hue_bridge import HueBridge
 from light_controller import LightController
 from event_handler import EventHandler
@@ -9,18 +8,17 @@ import dotenv
 import logging
 
 
-dotenv.load_dotenv(dotenv_path=".env")
+dotenv.load_dotenv(dotenv_path="../.env")
 
 logging.basicConfig(level=logging.DEBUG)
 
 
-@dataclass
 class APIConfig:
-    username = str(os.getenv("USERNAME", ""))
-    token = str(os.getenv("TOKEN", ""))
-    base_url = str(os.getenv("BASE_URL", "https://eventsapi.chaturbate.com/events"))
-    request_timeout = int(os.getenv("TIMEOUT", "30"))
-    url = str(f"{base_url}{username}/{token}/?timeout={request_timeout}")
+    username: str = os.getenv("USERNAME", "")
+    token: str = os.getenv("TOKEN", "")
+    base_url: str = os.getenv("BASE_URL", "https://eventsapi.chaturbate.com/events")
+    request_timeout: int = int(os.getenv("TIMEOUT", "30"))
+    url = str(f"{base_url}{username}/{token}?timeout={request_timeout}")
 
 
 async def main():
@@ -35,7 +33,7 @@ async def main():
     event_handler = EventHandler()
 
     # Initialize the Event Poller with the required arguments
-    event_poller = EventPoller(api_config.url, timeout=40)
+    event_poller = EventPoller(api_config.url, api_config.request_timeout)
 
     # Start polling events and processing them
     await event_handler.process_events(event_poller.poll_events(), light_controller)
