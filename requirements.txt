@@ -2,3 +2,5 @@ qhue
 zeroconf
 PyYAML
 requests
+aiohttp
+backoff

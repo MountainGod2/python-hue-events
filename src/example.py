@@ -8,6 +8,7 @@
 
 import json
 from os import path
+
 from qhue import Bridge, QhueException, create_new_username
 
 # the IP address of your bridge
