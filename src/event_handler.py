@@ -18,7 +18,7 @@ class EventHandler:
     def __init__(self):
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    async def process_events(self, events_gen, hue_bridge):
+    async def process_events(self, events_gen, light_controller):
         """
         Process events.
 
@@ -31,19 +31,19 @@ class EventHandler:
                     event_method = event["method"]
                     self.logger.debug(f"Received event: {event_method}")
                     if event_method == "userEnter":
-                        self.process_user_enter(event, hue_bridge)
+                        self.process_user_enter(event, light_controller)
 
                 except KeyError as e:
                     self.logger.error(f"Key error in event data: {e}")
 
-        async def process_user_enter(self, event_dict, hue_bridge):
+        async def process_user_enter(self, event_dict, light_controller):
             try:
                 self.logger.info("User entered the room.")
                 user_data = event_dict.get("object", {})
                 user = User(**user_data)
                 username = user.username
                 self.logger.debug(f"User entered: {username}")
-                hue_bridge.flash_light(5)
+                light_controller.flash_light(5)
 
             except ValidationError as e:
                 self.logger.error(f"Validation error: {e}")
