@@ -5,3 +5,4 @@ requests
 aiohttp
 backoff
 dataclasses
+python-dotenv
