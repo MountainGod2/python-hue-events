@@ -10,10 +10,13 @@ Python Hue Events is a project that allows users to control their Philips Hue li
 
 ## Installation and Usage
 To install Python Hue Events, follow these steps:
-1. Install Python and add to path. [Direct Download Link](https://www.python.org/ftp/python/3.12.1/python-3.12.1-amd64.exe) *Make sure to **ADD TO PATH***
-2. Create an API token: `https://chaturbate.com/statsapi/authtoken/` (Ensure you select the "Events API" checkbox).
-3. Clone the repository to your local machine and extract it. [Direct Download Link](https://github.com/MountainGod2/python-hue-events/archive/refs/heads/main.zip)
-4. Open Powershell and navigate to the extracted repository folder. Ex. `cd C:\Users\USERNAME\documents\python-hue-events-main`
+1. Install Python and add to path. [Direct Download Link](https://www.python.org/ftp/python/3.12.1/python-3.12.1-amd64.exe).
+*Make sure to select**ADD TO PATH***
+2. Create an API token: [Link](https://chaturbate.com/statsapi/authtoken/).
+**Ensure you select the "Events API" checkbox**.
+3. Clone the repository to your local machine and extract it. [Direct Download Link](https://github.com/MountainGod2/python-hue-events/archive/refs/heads/main.zip).
+4. Open Powershell and navigate to the extracted repository folder.
+Ex. `cd C:\Users\USERNAME\documents\python-hue-events-main`
 6. Install the required dependencies. `python -m pip install -r requirements.txt`
 7. Run the program and follow the instructions. `python src/main.py`
 
