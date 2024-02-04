@@ -82,6 +82,8 @@ async def main():
         event_poller = EventPoller(url, API_TIMEOUT)
 
         logging.getLogger("Main").info("Starting program.")
+        print("Starting program.")
+        
         # Start polling events and processing them
         await event_handler.process_events(event_poller.poll_events(), light_ctrl)
 
@@ -94,7 +96,7 @@ async def main():
     finally:
         logging.getLogger("Main").info("Shutting down.")
         # Align the log entries
-        log_aligner = LogAligner(file_path="app.log", delete_original=True)
+        log_aligner = LogAligner(file_path="app.log", delete_original=False)
         await log_aligner.align_log_entries()
 
 

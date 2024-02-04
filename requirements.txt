@@ -3,6 +3,7 @@ zeroconf
 PyYAML
 requests
 aiohttp
+aiofiles
 backoff
 dataclasses
 python-dotenv
