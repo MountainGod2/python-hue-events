@@ -8,15 +8,17 @@ Python Hue Events is a project that allows users to control their Philips Hue li
 - Python 3.x: [Download Python](https://www.python.org/downloads/)
 - Libraries: See `requirements.txt`
 
-## Installation
+## Installation and Usage
 To install Python Hue Events, follow these steps:
-1. Clone the repository to your local machine.
-2. Install the required dependencies by running `pip install -r requirements.txt` in your terminal.
-3. Create an API token: `https://chaturbate.com/statsapi/authtoken/` (Ensure you select the "Events API" checkbox).
-4. Follow the program instructions to setup your .env file and Hue credentials.
+1. Install Python and add to path. [Direct Download Link](https://www.python.org/ftp/python/3.12.1/python-3.12.1-amd64.exe) *Make sure to **ADD TO PATH***
+2. Create an API token: `https://chaturbate.com/statsapi/authtoken/` (Ensure you select the "Events API" checkbox).
+3. Clone the repository to your local machine and extract it. [Direct Download Link](https://github.com/MountainGod2/python-hue-events/archive/refs/heads/main.zip)
+4. Open Powershell and navigate to the extracted repository folder. Ex. `cd C:\Users\USERNAME\documents\python-hue-events-main`
+6. Install the required dependencies. `python -m pip install -r requirements.txt`
+7. Run the program and follow the instructions. `python src/main.py`
 
-## Usage
-After installation, you can run the project by executing the `main.py` script in the `src` directory. The application performs the following tasks:
+## Program Logic
+The application performs the following tasks:
 - Initializes the connection with the Philips Hue Bridge.
 - Sets up light control mechanisms.
 - Polls the Chaturbate Events API for updates.
