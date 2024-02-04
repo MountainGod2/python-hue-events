@@ -1,5 +1,3 @@
-"""EventPoller class."""
-
 import asyncio
 import logging
 
@@ -36,7 +34,7 @@ class EventPoller:
         """
         async with aiohttp.ClientSession() as session:
             url = self.base_url
-            self.logger.debug(f"Initial URL: {url}")
+            # self.logger.debug(f"Initial URL: {url}") # Uncomment to see initial URL
             while True:
                 try:
                     async with session.get(

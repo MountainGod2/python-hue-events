@@ -9,6 +9,7 @@
 import json
 from os import path
 
+import yaml
 from qhue import Bridge, QhueException, create_new_username
 
 # the IP address of your bridge
@@ -48,11 +49,20 @@ def main():
     # create the bridge resource, passing the captured username
     bridge = Bridge(BRIDGE_IP, username)
 
-    # create a lights resource
-    lights = bridge.lights
+    # print the lights, groups, config, and scenes
+    print("Lights:")
+    print(yaml.safe_dump(bridge.lights(), indent=4))
 
-    # query the API and print the results as JSON
-    print(json.dumps(lights(), indent=2))
+    # Uncomment the lines below to print the information
+
+    # print("Groups:")
+    # print(yaml.safe_dump(bridge.groups(), indent=4))
+
+    # print("Config:")
+    # print(yaml.safe_dump(bridge.config(), indent=4))
+
+    # print("Scenes:")
+    # print(yaml.safe_dump(bridge.scenes(), indent=4))
 
 
 if __name__ == "__main__":

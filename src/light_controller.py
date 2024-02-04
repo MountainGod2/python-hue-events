@@ -1,58 +1,51 @@
 import json
+import logging
 import time
+
 import yaml
 
 
 class LightController:
     def __init__(self, bridge):
-        self.bridge = None
+        self.bridge = bridge
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def list_lights(self):
-        lights = self.bridge.lights()
+        lights = self.bridge.bridge.lights()
         for light_id, light in lights.items():
-            print(f"{light_id}: {light['name']}")
+            self.logger.info(f"Light {light_id}: {light['name']}")
         return lights
 
     def list_light_details(self, light_id, format="json"):
-        light = self.bridge.lights[light_id]()
+        light = self.bridge.bridge.lights[light_id]()
         if format == "json":
-            print(json.dumps(light["state"], indent=2))
+            self.logger.info(json.dumps(light["state"], indent=4))
         elif format == "yaml":
-            print(yaml.safe_dump(light["state"], indent=4))
+            self.logger.info(yaml.safe_dump(light["state"], indent=4))
         else:
-            print("Invalid format specified.")
+            self.logger.error(f"Invalid format: {format}")
         return light["state"]
 
     def get_light_state(self, light_id):
-        light = self.bridge.lights[light_id]()
+        light = self.bridge.bridge.lights[light_id]()
         state = light["state"]["on"]
-        print(f"Light {light_id} is {'on' if state else 'off'}")
+        self.logger.info(f"Light {light_id} is {'on' if state else 'off'}")
         return state
 
-    def flash_light(self, light_id):
-        light = self.bridge.lights[light_id]()
-
-        # Save current state
-        state = light["state"]["on"]
-
-        # Get current state
-        xy = light["state"]["xy"]
-        bri = light["state"]["bri"]
-        print(f"Current xy: {xy}")
-        print(f"Current brightness: {bri}")
-
+    def flash_group_lights(self, group_id):
         # Flash green
-        print(f"Flashing light(s): {light_id} green")
+        self.logger.info("Flashing lights green")
 
-        self.bridge.lights(light_id, "state", on=True, bri=200, xy=[0.1, 0.8])
+        self.bridge.bridge.groups(group_id, "action", on=True, bri=200, xy=[0.1, 0.8])
+        time.sleep(0.6)
+        self.bridge.bridge.groups(group_id, "action", on=False)
         time.sleep(1)
-        self.bridge.lights(light_id, "state", on=False)
-        time.sleep(1)
-        self.bridge.lights(light_id, "state", on=True, bri=200, xy=[0.1, 0.8])
-        time.sleep(1)
-        self.bridge.lights(light_id, "state", on=False)
+        self.bridge.bridge.groups(group_id, "action", on=True, bri=200, xy=[0.1, 0.8])
+        time.sleep(0.6)
+        self.bridge.bridge.groups(group_id, "action", on=False)
         time.sleep(1)
 
-        # Restore previous state
-        print(f"Restoring previous state for light(s): {light_id}")
-        self.bridge.lights(light_id, "state", on=state, bri=bri, xy=xy)
+        self.logger.info("Returning lights to neutral color")
+        self.bridge.bridge.groups(
+            group_id, "action", on=True, bri=254, xy=[0.413, 0.395]
+        )

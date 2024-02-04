@@ -1,14 +1,17 @@
 import json
+import logging
 from os import path
+
 import requests
 import zeroconf
 from qhue import Bridge, QhueException, create_new_username
 
-CREDENTIALS_FILE_PATH = "credentials.json"
+from constants import CREDENTIALS_FILE_PATH
 
 
 class HueBridge:
     def __init__(self):
+        self.logger = logging.getLogger(self.__class__.__name__)
         self.discovered_ip = None
         self.ip = None
         self.username = None
@@ -37,7 +40,8 @@ class HueBridge:
             else:
                 return False
         except Exception as e:
-            raise Exception(f"Error during mDNS discovery: {str(e)}")
+            self.logger.error(f"Error during mDNS discovery: {str(e)}")
+            return False
 
     def discover_hue_bridges_cloud(self):
         try:
@@ -50,7 +54,8 @@ class HueBridge:
             else:
                 return False
         except requests.exceptions.RequestException as e:
-            raise Exception(f"Error during cloud discovery: {str(e)}")
+            self.logger.error(f"Error during cloud discovery: {str(e)}")
+            return False
 
     def enter_manual_ip(self):
         try:
@@ -60,9 +65,9 @@ class HueBridge:
                 return True
             else:
                 return False
-
         except Exception as e:
-            raise Exception(f"Error entering manual IP: {str(e)}")
+            self.logger.error(f"Error entering manual IP: {str(e)}")
+            return False
 
     def find_hue_bridge(self):
         if self.discover_hue_bridge_mdns():
@@ -77,19 +82,22 @@ class HueBridge:
             username = create_new_username(ip)
             return username
         except QhueException as e:
-            raise Exception(f"Error creating new user: {str(e)}")
+            self.logger.error(f"Error creating new user: {str(e)}")
+            return None
 
     def save_credentials(self, ip, username):
         credentials = {"ip": ip, "username": username}
         with open(CREDENTIALS_FILE_PATH, "w") as file:
             json.dump(credentials, file)
-            return CREDENTIALS_FILE_PATH
+        return CREDENTIALS_FILE_PATH
 
     def connect_to_bridge(self):
         if self.load_credentials():
             self.bridge = Bridge(self.ip, self.username)
         else:
             self.ip = self.find_hue_bridge()
-            self.username = self.create_new_user(self.ip)
-            self.bridge = Bridge(self.ip, self.username)
-            self.save_credentials(self.ip, self.username)
+            if self.ip:
+                self.username = self.create_new_user(self.ip)
+                if self.username:
+                    self.bridge = Bridge(self.ip, self.username)
+                    self.save_credentials(self.ip, self.username)
