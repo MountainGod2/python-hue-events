@@ -3,11 +3,16 @@
 ## Description
 Python Hue Events is a project that allows users to control their Philips Hue lights in response to updates from the Chaturbate Events API. The application polls events, processes them, and then commands the lights based on these events. (By default, it flashes the lights green when a fan club member joins the room.)
 
+## Prerequisites
+
+- Python 3.x: [Download Python](https://www.python.org/downloads/)
+- Libraries: See `requirements.txt`
+
 ## Installation
 To install Python Hue Events, follow these steps:
 1. Clone the repository to your local machine.
 2. Install the required dependencies by running `pip install -r requirements.txt` in your terminal.
-3. Create a API token here: `https://chaturbate.com/statsapi/authtoken/` (Ensure you select the "Events API" checkbox).
+3. Create an API token: `https://chaturbate.com/statsapi/authtoken/` (Ensure you select the "Events API" checkbox).
 4. Follow the program instructions to setup your .env file and Hue credentials.
 
 ## Usage
