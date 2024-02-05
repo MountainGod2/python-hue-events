@@ -29,6 +29,10 @@ class EventPoller:
         """
         Poll events from the Chaturbate Events API.
 
+        Args:
+            base_url (str): Base URL for the Chaturbate Events API.
+            timeout (int): Timeout for HTTP requests in seconds.
+
         Yields:
             list: List of events.
         """
@@ -61,7 +65,12 @@ class EventPoller:
                     await self.handle_error()
 
     async def handle_error(self, server_error=False):
-        """Handle errors by waiting and increasing the retry delay."""
+        """
+        Handle errors.
+
+        Args:
+            server_error (bool): If the error is a server error.
+        """
         if server_error:
             self.retry_delay = INITIAL_RETRY_DELAY
         else:

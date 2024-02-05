@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import os
 import re
@@ -42,6 +41,12 @@ class LogAligner:
             self._delete_file(self.file_path)
 
     async def _read_logs(self):
+        """
+        Reads the logs from the file asynchronously.
+
+        Returns:
+            list: List of log lines.
+        """
         self.logger.debug(f"Reading logs from '{self.file_path}' and aligning them.")
         try:
             async with aiofiles.open(
@@ -52,6 +57,15 @@ class LogAligner:
             raise IOError(f"Error reading file {self.file_path}: {e}") from e
 
     def _analyze_log_lines(self, lines):
+        """
+        Analyzes the log lines to determine the maximum length of the name and level.
+
+        Args:
+            lines (list): List of log lines.
+
+        Returns:
+            tuple: Tuple containing the maximum name and level lengths.
+        """
         max_name_length, max_level_length = 0, 0
         for line in lines:
             parts = self.LOG_LINE_PATTERN.split(line)
@@ -65,6 +79,16 @@ class LogAligner:
     async def _write_aligned_logs(
         self, lines, max_name_length, max_level_length, output_file
     ):
+        """
+        Writes the aligned log lines to a new file asynchronously.
+
+        Args:
+            lines (list): List of log lines.
+            max_name_length (int): Maximum length of the name.
+            max_level_length (int): Maximum length of the level.
+            output_file (Path): Path to the output file.
+        """
+
         try:
             async with aiofiles.open(output_file, mode="w", encoding="utf-8") as file:
                 for line in lines:
@@ -76,12 +100,13 @@ class LogAligner:
             raise IOError(f"Error writing to file {output_file}: {e}") from e
 
     def _delete_file(self, file_path):
+        """
+        Deletes the file.
+
+        Args:
+            file_path (Path): Path to the file.
+        """
         try:
             os.remove(file_path)
         except OSError as e:
             raise OSError(f"Error deleting file {file_path}: {e}") from e
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    asyncio.run(LogAligner().align_log_entries())

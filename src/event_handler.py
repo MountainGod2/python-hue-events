@@ -18,6 +18,7 @@ class EventHandler:
 
         Args:
             events_gen (generator): Generator for events.
+            light_controller (LightController): Light controller instance.
         """
         async for events in events_gen:
             for event in events:
@@ -33,6 +34,13 @@ class EventHandler:
                     self.logger.error(f"Key error in event data: {e}")
 
     async def process_user_enter(self, event_dict, light_controller):
+        """
+        Process user enter event.
+
+        Args:
+            event_dict (dict): Event data.
+            light_controller (LightController): Light controller instance.
+        """
         try:
             self.logger.info("User entered the room.")
             user_data = event_dict.get("object", {}).get("user", {})

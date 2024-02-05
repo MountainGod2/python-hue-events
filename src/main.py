@@ -28,6 +28,15 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 
 def extract_user_and_token(url):
+    """
+    Extract the username and token from the Chaturbate API token URL.
+
+    Args:
+        url (str): Chaturbate API token URL.
+
+    Returns:
+        tuple: Username and token.
+    """
     # Extract username and token from the URL using regular expressions
     match = re.match(r"https://eventsapi.chaturbate.com/events/([^/]+)/([^/]+)/", url)
     if match:
@@ -36,6 +45,12 @@ def extract_user_and_token(url):
 
 
 def prompt_for_api_url_and_save():
+    """
+    Prompt the user for the Chaturbate API token URL and save the username and token to the .env file.
+
+    Returns:
+        tuple: Username and token.
+    """
     while True:
         api_url = input("Enter your Chaturbate API token URL: ")
         username, token = extract_user_and_token(api_url)
@@ -50,6 +65,9 @@ def prompt_for_api_url_and_save():
 
 
 async def main():
+    """
+    Main function to start the program.
+    """
     try:
         # Load the environment variables for the username and token
         dotenv.load_dotenv()
@@ -83,7 +101,7 @@ async def main():
 
         logging.getLogger("Main").info("Starting program.")
         print("Starting program.")
-        
+
         # Start polling events and processing them
         await event_handler.process_events(event_poller.poll_events(), light_ctrl)
 
