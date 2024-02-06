@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import re
+
 import dotenv
 
 from constants import API_TIMEOUT
